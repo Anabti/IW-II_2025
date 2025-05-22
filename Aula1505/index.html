@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercícios de Manipulação do DOM</title>
+</head>
+<body>
+    
+    <h4>1. Botão que exibe a hora atual</h4>
+    <p id="horaParagrafo"><button id="horaBotao">Clique aqui</button></p>
+    <script>
+        document.getElementById("horaBotao").addEventListener("click", () => {
+            const agora = new Date();
+            const horaFormatada = agora.toLocaleTimeString();
+            document.getElementById("horaParagrafo").textContent = horaFormatada;
+        });
+    </script>
+
+    <h4>2. Botão que alterna entre o modo claro e escuro da página</h4>
+    <button id="alternaFundoBotao">Clique aqui</button>
+    <script>
+        document.getElementById("alternaFundoBotao").addEventListener("click", () => {
+            document.body.classList.toggle("modo-escuro");
+            const botao = document.getElementById("alternaFundoBotao");
+            botao.textContent = document.body.classList.contains("modo-escuro") ? "🌞" : "🌙";
+        });
+    </script>
+    <style>
+    body {
+        background-color: white;
+        color: black;
+    }
+
+    .modo-escuro {
+        background-color: #121212;
+        color: white;
+    }
+    </style>
+
+    <h4>3. Botão de 'curtir'</h4>
+    <p id="ContadorCurtidas"></p>
+    <button id="CurtirBotao">Clique aqui</button>
+    <script>
+        let curtidas = 0;
+        document.getElementById("CurtirBotao").addEventListener("click", () => {
+            curtidas++;
+            document.getElementById("ContadorCurtidas").textContent = `❤️ ${curtidas}`;
+        });
+    </script>
+
+    <h4>4. Campo obrigatório que exiba um alerta ao perder se estiver vazio</h4>
+    <input id="CampoObrigatorio" placeholder="Escreva algo"> 
+    <script>
+        document.getElementById("CampoObrigatorio").addEventListener("blur", (e) => {
+        if (e.target.value.trim() === "") {
+            alert("Este campo é obrigatório!");
+        }
+        });
+    </script>
+
+    <h4>5. Botão que expande e encolhe um parágrafo</h4>
+    <button id="ExpandirParagrafo">Clique aqui</button>
+    <p id="paragrafoExpansivel">Obrigado por clicar</p>
+    <script>
+        document.getElementById("ExpandirParagrafo").addEventListener("click", () => {
+            const p = document.getElementById("paragrafoExpansivel");
+            p.classList.toggle("expandido");
+        });
+    </script>
+    <style>
+        #paragrafoExpansivel {
+            max-height: 0;
+            overflow: hidden;
+        }
+        #paragrafoExpansivel.expandido {
+            max-height: 500px;
+        }
+    </style>
+
+    <h4>6. Botão que copia o conteúdo de uma div</h4>
+    <div id="Txt">Lorem ipsum dolor sit amet consectetur adipisicing elit.</div>
+    <br>
+    <button id="CopiarBotao">Clique aqui</button>
+    <script>
+        document.getElementById("CopiarBotao").addEventListener("click", () => {
+            const texto = document.getElementById("Txt").textContent;
+            navigator.clipboard.writeText(texto).then(() => {
+                alert("Texto copiado");
+            });
+        });
+    </script>
+
+    <h4>7. Campo de texto que fica vermelho se o conteúdo for menor que 5 caracteres</h4>
+    <input id="CampoTexto" placeholder="Olá">
+    <script>
+        document.getElementById("CampoTexto").addEventListener("input", (e) => {
+        if (e.target.value.length < 5) {
+            e.target.style.border = "3px solid red";
+        } else {
+            e.target.style.border = "";
+        }
+        });
+    </script>
+
+    <h4>8. Botão que gera 5 quadrados com cores aleatórias</h4>
+
+    <button id="GeraQuadrados">Clique aqui</button>
+    <br>
+    <div id="containerQuadrados"></div>
+    <script>
+        document.getElementById("GeraQuadrados").addEventListener("click", () => {
+            const container = document.getElementById("containerQuadrados");
+            container.innerHTML = "";
+            for (let i = 0; i < 5; i++) {
+                const div = document.createElement("div");
+                div.style.width = "50px";
+                div.style.height = "50px";
+                div.style.display = "inline-block";
+                div.style.margin = "10px";
+                div.style.backgroundColor = "#" + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+                container.appendChild(div);
+            }
+        });
+    </script>
+
+    <h4>9. Campo de upload de imagem que exibie uma pré-visualização da imagem</h4>
+
+    <input type="file" id="inputImagem" accept="image/*">
+    <br><br>
+    <img id="previewImagem" src="" alt="Pré-visualização" style="max-width: 300px; display: none; border: 1px solid #ccc;">
+    <script>
+    document.getElementById("inputImagem").addEventListener("change", (e) => {
+        const arquivo = e.target.files[0];
+        if (arquivo && arquivo.type.startsWith("image/")) {
+        const reader = new FileReader();
+        reader.onload = function(evento) {
+            const imagem = document.getElementById("previewImagem");
+            imagem.src = evento.target.result;
+            imagem.style.display = "block";
+        };
+        reader.readAsDataURL(arquivo);
+        } else {
+        alert("Por favor, selecione uma imagem válida.");
+        }
+    });
+    </script>
+
+    <h4>10. Lista onde cada item possui botões para mover o item para cima ou para baixo</h4>
+    <ul id="lista">
+        <li>A 1 <button class="mover cima">↑</button> <button class="mover baixo">↓</button></li>
+        <li>B 2 <button class="mover cima">↑</button> <button class="mover baixo">↓</button></li>
+        <li>C 3 <button class="mover cima">↑</button> <button class="mover baixo">↓</button></li>
+        <li>D 4 <button class="mover cima">↑</button> <button class="mover baixo">↓</button></li>
+        <li>E 5 <button class="mover cima">↑</button> <button class="mover baixo">↓</button></li>
+        <li>F 6 <button class="mover cima">↑</button> <button class="mover baixo">↓</button></li>
+        <li>G 7 <button class="mover cima">↑</button> <button class="mover baixo">↓</button></li>
+        <li>H 8 <button class="mover cima">↑</button> <button class="mover baixo">↓</button></li>
+        <li>I 9 <button class="mover cima">↑</button> <button class="mover baixo">↓</button></li>
+        <li>J 10 <button class="mover cima">↑</button> <button class="mover baixo">↓</button></li>
+    </ul>
+    <script>
+        document.querySelectorAll(".mover").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const li = btn.parentElement;
+            const ul = li.parentElement;
+            if (btn.classList.contains("cima") && li.previousElementSibling) {
+            ul.insertBefore(li, li.previousElementSibling);
+            }
+            if (btn.classList.contains("baixo") && li.nextElementSibling) {
+            ul.insertBefore(li.nextElementSibling, li);
+            }
+        });
+        });
+    </script>
+</body>
+</html>
